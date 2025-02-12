@@ -1,0 +1,20 @@
+@use '@/sass/typography' as *;
+@use '@/sass/variables' as *;
+
+@mixin base($bg-color, $border-color, $text-color) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: 1px solid $border-color;
+  font-size: $font-size-base;
+  padding: 1.25rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.contained {
+  @include base($black, $black, $white);
+}
+
+.outlined {
+  @include base($white, $black, $black);
+}
