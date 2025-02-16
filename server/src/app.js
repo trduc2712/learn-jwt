@@ -1,10 +1,13 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import { authRoute } from './routes/v1/index.js';
+import { errorHandler } from './middlewares/index.js';
 
 const app = express();
 
-dotenv.config({ path: '.env.local' });
-
 app.use(express.json());
+
+app.use('/api/v1/auth', authRoute);
+
+app.use(errorHandler);
 
 export default app;

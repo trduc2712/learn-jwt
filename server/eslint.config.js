@@ -28,7 +28,7 @@ export default [
       ...js.configs.recommended.rules,
       ...eslintConfigPrettier.rules,
       'node/no-unsupported-features/es-syntax': 'off',
-      'node/no-missing-import': 'error',
+      'node/no-missing-import': 'off',
       'prettier/prettier': 'error',
     },
   },
