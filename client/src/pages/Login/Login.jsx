@@ -1,38 +1,37 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signupApi } from '@/api';
-import { Button, Form, Input, notification } from 'antd';
-import { REGEX } from '@/utils/constants';
+import { notification } from 'antd';
+import { loginApi } from '@/api';
+import { Button, Form, Input } from 'antd';
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Signup';
+    document.title = 'Login';
   }, []);
 
   const onFinish = async values => {
-    const { name, email, phone, password } = values;
+    const { email, password } = values;
 
     try {
-      const result = await signupApi({ name, email, phone, password });
+      const result = await loginApi({ email, password });
 
       if (result && !result.statusCode) {
         notification.success({
           message: 'Success',
-          description: 'Sign up successfully',
+          description: 'Log in successfully',
         });
-        navigate('/auth/login');
+        navigate('/');
       } else {
         notification.error({
           message: 'Error',
           description:
-            result?.message || 'Sign up failed due to an unknown error',
+            result?.message || 'Log in failed due to an unknown error',
         });
       }
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      console.log('err: ', err);
       notification.error({
         message: 'Error',
         description: 'An unexpected error occurred during the signup process',
@@ -57,19 +56,6 @@ const Signup = () => {
       layout="vertical"
     >
       <Form.Item
-        label="Name"
-        name="name"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your name!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
         label="Email"
         name="email"
         rules={[
@@ -84,31 +70,12 @@ const Signup = () => {
       </Form.Item>
 
       <Form.Item
-        label="Phone"
-        name="phone"
-        rules={[
-          { required: true, message: 'Please input your phone number!' },
-          {
-            pattern: REGEX.PHONE,
-            message: 'Invalid phone format',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
         label="Password"
         name="password"
         rules={[
           {
             required: true,
             message: 'Please input your password!',
-          },
-          {
-            pattern: REGEX.PASSWORD,
-            message:
-              'Password must be at least 8 characters, include uppercase, lowercase, number, and special character!',
           },
         ]}
       >
@@ -117,11 +84,11 @@ const Signup = () => {
 
       <Form.Item label={null} style={{ textAlign: 'center', marginTop: 48 }}>
         <Button type="primary" htmlType="submit">
-          Sign up
+          Log in
         </Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default Signup;
+export default Login;

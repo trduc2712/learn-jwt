@@ -1,14 +1,18 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from '@/components';
-import styles from './MainLayout.module.scss';
+import { Layout } from 'antd';
 
-export const MainLayout = () => {
+const { Content } = Layout;
+
+const MainLayout = () => {
   return (
-    <div className={styles.container}>
+    <Layout>
       <Header />
-      <main>
+      <Content>
         <Outlet />
-      </main>
-    </div>
+      </Content>
+    </Layout>
   );
 };
+
+export default MainLayout;

@@ -1,21 +1,24 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ROUTES } from './constants';
-
-const renderRoutes = routes => {
-  return routes.map(route => (
-    <Route key={route.id} path={route.path} element={<route.element />}>
-      {route.children &&
-        route.children.map(child => (
-          <Route key={child.id} path={child.path} element={<child.element />} />
-        ))}
-    </Route>
-  ));
-};
+import { AuthLayout, MainLayout } from './layouts';
+import { Home, Login, Signup } from './pages';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>{renderRoutes(ROUTES)}</Routes>
+      <Routes>
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+
+        <Route path="/admin" element={<MainLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
