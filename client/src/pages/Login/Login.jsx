@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
 import { loginApi } from '@/api';
@@ -15,26 +15,26 @@ const Login = () => {
     const { email, password } = values;
 
     try {
-      const result = await loginApi({ email, password });
+      const response = await loginApi({ email, password });
 
-      if (result && !result.statusCode) {
+      if (response && !response.statusCode) {
         notification.success({
           message: 'Success',
-          description: 'Log in successfully',
+          description: response.message,
         });
+
         navigate('/');
       } else {
         notification.error({
           message: 'Error',
-          description:
-            result?.message || 'Log in failed due to an unknown error',
+          description: response.message,
         });
       }
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       notification.error({
         message: 'Error',
-        description: 'An unexpected error occurred during the signup process',
+        description: 'An unexpected error occurred during the login process',
       });
     }
   };
@@ -46,9 +46,6 @@ const Login = () => {
       name="basic"
       style={{
         maxWidth: 600,
-      }}
-      initialValues={{
-        remember: true,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}

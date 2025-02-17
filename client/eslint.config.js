@@ -49,6 +49,7 @@ export default [
       ],
       'prettier/prettier': 'error',
       'no-unused-vars': 'warn',
+      'react/prop-types': 'off',
     },
   },
 ];

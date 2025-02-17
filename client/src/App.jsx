@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthLayout, MainLayout } from './layouts';
-import { Home, Login, Signup } from './pages';
+import { Home, Login, Signup, Users } from './pages';
 
 const App = () => {
   return (
@@ -13,10 +13,7 @@ const App = () => {
 
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-        </Route>
-
-        <Route path="/admin" element={<MainLayout />}>
-          <Route index element={<Home />} />
+          <Route path="users" element={<Users />} />
         </Route>
       </Routes>
     </BrowserRouter>

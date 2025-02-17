@@ -15,24 +15,22 @@ const Signup = () => {
     const { name, email, phone, password } = values;
 
     try {
-      const result = await signupApi({ name, email, phone, password });
+      const response = await signupApi({ name, email, phone, password });
 
-      if (result && !result.statusCode) {
+      if (response && !response.statusCode) {
         notification.success({
           message: 'Success',
-          description: 'Sign up successfully',
+          description: response.message,
         });
         navigate('/auth/login');
       } else {
         notification.error({
           message: 'Error',
-          description:
-            result?.message || 'Sign up failed due to an unknown error',
+          description: response.message,
         });
       }
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      console.log('err: ', err);
       notification.error({
         message: 'Error',
         description: 'An unexpected error occurred during the signup process',
