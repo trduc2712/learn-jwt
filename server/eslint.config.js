@@ -30,6 +30,7 @@ export default [
       'node/no-unsupported-features/es-syntax': 'off',
       'node/no-missing-import': 'off',
       'prettier/prettier': 'error',
+      'no-unused-vars': 'warn',
     },
   },
 ];

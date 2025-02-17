@@ -1,23 +1,51 @@
 import { StatusCodes } from 'http-status-codes';
+import ms from 'ms';
+import { env } from '@/config/index.js';
 import { userService } from '@/services/index.js';
-import { tokenUtil } from '@/utils/index.js';
+import { ApiError, passwordUtil, tokenUtil } from '@/utils/index.js';
 
 const signup = async (req, res, next) => {
   try {
-    const newUser = await userService.createUser(req.body);
+    const userData = req.body;
+    await userService.createUser(userData);
 
-    const accessToken = tokenUtil.generateToken(newUser.id, 'access');
-    const refreshToken = tokenUtil.generateToken(newUser.id, 'refresh');
+    return res.status(StatusCodes.CREATED).json({
+      message: 'User registered successfully',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await userService.getUserByEmail(email);
+    const isPasswordMatch = await passwordUtil.comparePassword(
+      password,
+      user.password
+    );
+
+    if (!isPasswordMatch) {
+      throw new ApiError(
+        StatusCodes.UNAUTHORIZED,
+        'Incorrect email or password'
+      );
+    }
+
+    const accessToken = tokenUtil.generateToken(user.id, 'access');
+    const refreshToken = tokenUtil.generateToken(user.id, 'refresh');
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'Strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: ms(env.REFRESH_TOKEN_EXPIRES_IN),
     });
 
-    return res.status(StatusCodes.CREATED).json({
-      message: 'User registered successfully',
+    return res.status(StatusCodes.OK).json({
+      message: 'User authenticated successfully',
       accessToken,
     });
   } catch (err) {
@@ -25,4 +53,4 @@ const signup = async (req, res, next) => {
   }
 };
 
-export const authController = { signup };
+export const authController = { signup, login };

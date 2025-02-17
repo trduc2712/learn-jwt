@@ -5,4 +5,8 @@ const encryptPassword = async password => {
   return bcrypt.hash(password, salt);
 };
 
-export const passwordUtil = { encryptPassword };
+const comparePassword = async (password, encryptedPassword) => {
+  return bcrypt.compare(password, encryptedPassword);
+};
+
+export const passwordUtil = { encryptPassword, comparePassword };

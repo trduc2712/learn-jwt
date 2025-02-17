@@ -30,4 +30,33 @@ const createUser = async ({ name, email, phone, password, roleId }) => {
   return newUser;
 };
 
-export const userService = { createUser };
+const getUserByEmail = async email => {
+  const foundUser = await User.findOne({
+    where: { email },
+  });
+
+  if (!foundUser) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  return foundUser;
+};
+
+const getAllUsers = async () => {
+  try {
+    const users = await User.findAll();
+
+    if (!users.length) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'No users found');
+    }
+
+    return users;
+  } catch (error) {
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      error.message || 'An error occurred while fetching users'
+    );
+  }
+};
+
+export const userService = { createUser, getUserByEmail, getAllUsers };
