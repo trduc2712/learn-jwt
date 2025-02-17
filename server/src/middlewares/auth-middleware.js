@@ -5,7 +5,6 @@ import { env } from '@/config/index.js';
 
 const verifyToken = (req, res, next) => {
   if (WHITELIST_ROUTES.includes(req.path)) {
-    console.log('WHITELIST_ROUTES: ', WHITELIST_ROUTES);
     return next();
   }
 

@@ -47,6 +47,7 @@ const login = async (req, res, next) => {
     return res.status(StatusCodes.OK).json({
       message: 'User authenticated successfully',
       accessToken,
+      name: user.name,
     });
   } catch (err) {
     next(err);
